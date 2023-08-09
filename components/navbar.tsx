@@ -1,5 +1,6 @@
 "use client"
 
+import { getServerSession } from "next-auth"
 import { 
   NavigationMenu, 
   NavigationMenuContent, 
@@ -8,6 +9,7 @@ import {
   NavigationMenuList, 
   NavigationMenuTrigger 
 } from "./ui/navigation-menu"
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const Navbar = () => {
   return (
