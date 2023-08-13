@@ -9,9 +9,14 @@ export default function Home() {
   console.log(session);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-8">
-      <Input />
+    <main className="flex max-h-screen flex-col items-center justify-between p-8">
       <SignIn />
+      <div className="grow-1 mb-auto">
+        <h1>Hello</h1>
+      </div>
+      <div className="mt-auto w-full">
+        <Input />
+      </div>
     </main>
   )
 }
