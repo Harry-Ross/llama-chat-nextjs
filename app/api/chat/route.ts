@@ -3,8 +3,8 @@ import { z } from "zod";
 import { LlamaService } from "@/services/llama";
 
 const bodySchema = z.object({
-  question: z.string()
-})
+  question: z.string(),
+});
 
 export async function POST(req: Request) {
   // const body = req.json();
@@ -16,7 +16,6 @@ export async function POST(req: Request) {
     LlamaService.register();
   }
 
-  
   const q1 = "Generate a basic React component";
   console.log("User: " + q1);
 

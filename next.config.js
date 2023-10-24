@@ -5,11 +5,11 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
-        port: '',
+        port: "",
         pathname: "/u/**",
-      }
-    ]
+      },
+    ],
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

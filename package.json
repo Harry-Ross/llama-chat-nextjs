@@ -36,6 +36,8 @@
   },
   "devDependencies": {
     "lucide-react": "^0.265.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.6",
     "prisma": "5.1.1"
   }
 }
