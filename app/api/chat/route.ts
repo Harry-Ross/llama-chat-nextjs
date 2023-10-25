@@ -47,37 +47,21 @@ export async function POST(req: Request) {
   });
 
   if (current.prompt && !current.response) {
-    const response = await session.prompt(current.prompt, { 
-      onToken(token) {
-        console.log("Token: " + session.context.decode(token));
+    const stream = new ReadableStream({
+      async pull(controller) {
+        await session.prompt(current.prompt, { 
+          onToken(token) {
+            controller.enqueue(session.context.decode(token));
+          }
+        });
+
+        controller.close();
       }
     });
-    return new Response(response, { status: 200 });
+    return new Response(stream);
   } else {
     return new Response("No prompt found", { status: 400 });
   }
-}
-
-function iteratorToStream(iterator: AsyncIterableIterator<string>) {
-  const reader = {
-    async read() {
-      const { done, value } = await iterator.next();
-      return { done, value: value ? new TextEncoder().encode(value) : undefined };
-    },
-  };
-
-  return new ReadableStream({
-    async start(controller) {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) {
-          controller.close();
-          break;
-        }
-        controller.enqueue(value);
-      }
-    },
-  });
 }
 
 export const runtime = "nodejs";
