@@ -1,34 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+1. First, 
+
+2. Then, create a folder in the root directory called "llama", and add 
+
+3. Now run `pnpm install`. 
+
+4. (Optional) If you want to enable CUDA to speed up Llama 2, run the following command:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm dlx node-llama-cpp download --cuda
+```
+
+For this to work, you must have the CUDA toolkit installed, [cmake-js dependencies](https://github.com/cmake-js/cmake-js#:~:text=projectRoot/build%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5Bstring%5D-,Requirements%3A,-CMake) and CMake version 3.26 or higher. 
+
+For this to work for me on Windows, I had to modify the `compileLlamaCpp.js` file in the `node-llama-cpp` package. I had to change:
+
+```js
+if (cuda && process.env.CUDA_PATH != null && await fs.pathExists(process.env.CUDA_PATH))
+            cmakeCustomOptions.push("CMAKE_GENERATOR_TOOLSET=" + process.env.CUDA_PATH);
+```
+
+to this:
+
+```js
+if (cuda && process.env.CUDA_PATH != null && await fs.pathExists(process.env.CUDA_PATH))
+            cmakeCustomOptions.push("CMAKE_VS_PLATFORM_TOOLSET_CUDA=" + process.env.CUDA_PATH);
+```
+
+
+To see more information on how to install Cuda and to check other requirements, see [the official docs for `node-llama-cpp`](https://withcatai.github.io/node-llama-cpp/guide/CUDA).
+
+5. Now, you can run the development server:
+
+```bash
 pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The API route to interact with Llama 2 is at `/api/chat`.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

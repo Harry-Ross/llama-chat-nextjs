@@ -20,7 +20,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers themeProps={{ defaultTheme: "system", enableSystem: true }}>
-          <Navbar />
           {children}
         </Providers>
       </body>

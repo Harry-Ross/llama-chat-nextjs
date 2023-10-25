@@ -6,7 +6,7 @@ import {
 } from "node-llama-cpp";
 
 export class LlamaService {
-  static session: LlamaChatSession;
+  static context: LlamaContext;
 
   static register() {
     const model = new LlamaModel({
@@ -14,15 +14,10 @@ export class LlamaService {
       gpuLayers: 64,
     });
 
-    const context = new LlamaContext({ model });
-    this.session = new LlamaChatSession({ context });
+    this.context = new LlamaContext({ model });
   }
 
-  static getSession() {
-    return this.session;
-  }
-
-  static async prompt(question: string, options?: LLamaChatPromptOptions) {
-    return this.session.prompt(question, options);
+  static getContext() {
+    return this.context;
   }
 }

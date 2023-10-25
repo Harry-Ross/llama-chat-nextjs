@@ -1,34 +1,83 @@
 import { z } from "zod";
 
 import { LlamaService } from "@/services/llama";
+import { ConversationInteraction, LlamaChatSession } from "node-llama-cpp";
 
 const bodySchema = z.object({
-  question: z.string(),
+  messages: z.array(
+    z.object({ 
+      text: z.string(), 
+      system: z.boolean() 
+    })
+  ),
 });
 
 export async function POST(req: Request) {
-  // const body = req.json();
   // const parsedBody = await bodySchema.safeParseAsync(body);
   // if (!parsedBody.success) {
   //   return Response.json({ success: false }, { status: 400 })
   // }
-  if (!LlamaService.getSession()) {
+  if (!LlamaService.getContext()) {
     LlamaService.register();
   }
 
-  const q1 = "Generate a basic React component";
-  console.log("User: " + q1);
+  type BodyType = z.infer<typeof bodySchema>;
 
-  const a1 = await LlamaService.prompt(q1);
-  console.log("AI: " + a1);
+  const body: BodyType = await req.json();
+  
+  const conversationHistory: ConversationInteraction[] = [];
+  
+  
+  let current: ConversationInteraction = { prompt: "", response: "" };
+  body.messages?.forEach((msg)  => {
+    if (!msg.system) {
+      current = {
+        prompt: msg.text,
+        response: "",
+      };
+    } else {
+      current.response = msg.text;
+      conversationHistory.push(current);
+    }
+  });
 
-  const q2 = "Summarise what you said";
-  console.log("User: " + q2);
+  const session = new LlamaChatSession({
+    context: LlamaService.getContext(),
+    conversationHistory,
+  });
 
-  const a2 = await LlamaService.prompt(q2);
-  console.log("AI: " + a2);
+  if (current.prompt && !current.response) {
+    const response = await session.prompt(current.prompt, { 
+      onToken(token) {
+        console.log("Token: " + session.context.decode(token));
+      }
+    });
+    return new Response(response, { status: 200 });
+  } else {
+    return new Response("No prompt found", { status: 400 });
+  }
+}
 
-  return Response.json({ hello: "there" });
+function iteratorToStream(iterator: AsyncIterableIterator<string>) {
+  const reader = {
+    async read() {
+      const { done, value } = await iterator.next();
+      return { done, value: value ? new TextEncoder().encode(value) : undefined };
+    },
+  };
+
+  return new ReadableStream({
+    async start(controller) {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          controller.close();
+          break;
+        }
+        controller.enqueue(value);
+      }
+    },
+  });
 }
 
 export const runtime = "nodejs";
