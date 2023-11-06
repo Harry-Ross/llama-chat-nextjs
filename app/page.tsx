@@ -22,9 +22,23 @@ const mockData: Message[] = [
   }
 ] 
 
-export default function Home() {
-  const session = use(getServerSession(authOptions));
-  console.log(session);
+export default async function Home() {
+  //const session = use(getServerSession(authOptions));
+  //console.log(session);
+
+  fetch("http://localhost:3000/api/chat", {
+    method: "POST",
+    body: JSON.stringify({
+      messages: [
+        {
+          text: "Hello, how are you doing?",
+          system: false,
+        },
+      ],
+    }),
+  })
+    .then((res) => res.text())
+    .then((res) => console.log(res));
 
   return (
     <main className="flex flex-col p-2 h-screen">

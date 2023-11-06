@@ -41,14 +41,16 @@ export async function POST(req: Request) {
     }
   });
 
-  const session = new LlamaChatSession({
-    context: LlamaService.getContext(),
-    conversationHistory,
-  });
+  
 
   if (current.prompt && !current.response) {
+    const session = new LlamaChatSession({
+      context: LlamaService.getContext(),
+      conversationHistory,
+    });
+
     const stream = new ReadableStream({
-      async pull(controller) {
+      async start(controller) {
         await session.prompt(current.prompt, { 
           onToken(token) {
             controller.enqueue(session.context.decode(token));

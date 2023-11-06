@@ -43,6 +43,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  chatSessions  ChatSession[]
 }
 
 model VerificationToken {
@@ -51,4 +52,11 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model ChatSession {
+  id           String   @id @default(cuid())
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
