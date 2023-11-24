@@ -13,10 +13,12 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: Request) {
+  console.log("request recieved");
   // const parsedBody = await bodySchema.safeParseAsync(body);
   // if (!parsedBody.success) {
   //   return Response.json({ success: false }, { status: 400 })
   // }
+
   if (!LlamaService.getContext()) {
     LlamaService.register();
   }
@@ -40,7 +42,6 @@ export async function POST(req: Request) {
       conversationHistory.push(current);
     }
   });
-
   
 
   if (current.prompt && !current.response) {
@@ -49,18 +50,21 @@ export async function POST(req: Request) {
       conversationHistory,
     });
 
-    const stream = new ReadableStream({
-      async start(controller) {
-        await session.prompt(current.prompt, { 
-          onToken(token) {
-            controller.enqueue(session.context.decode(token));
-          }
-        });
+    // const stream = new ReadableStream({
+    //   async start(controller) {
+    //     await session.prompt(current.prompt, { 
+    //       onToken(token) {
+    //         controller.enqueue(session.context.decode(token));
+    //         console.log(session.context.decode(token));
+    //       }
+    //     });
 
-        controller.close();
-      }
-    });
-    return new Response(stream);
+    //     controller.close();
+    //   }
+    // });
+    const text = await session.prompt(current.prompt);
+
+    return new Response(text);
   } else {
     return new Response("No prompt found", { status: 400 });
   }

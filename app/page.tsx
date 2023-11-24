@@ -31,11 +31,12 @@ export default async function Home() {
     body: JSON.stringify({
       messages: [
         {
-          text: "Hello, how are you doing?",
+          text: "Tell me the great things about React",
           system: false,
         },
       ],
     }),
+    cache: "no-store",
   })
     .then((res) => res.text())
     .then((res) => console.log(res));
