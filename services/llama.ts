@@ -1,18 +1,17 @@
 import {
-  LLamaChatPromptOptions,
-  LlamaChatSession,
   LlamaContext,
   LlamaModel,
 } from "node-llama-cpp";
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class LlamaService {
   private static context: LlamaContext;
 
-  public static getContext() {
+  public static getContext(): LlamaContext {
     return this.context;
   }
 
-  public static register() {
+  public static register(): void {
     const model = new LlamaModel({
       modelPath: "llama/llama-2-7b-chat.Q2_K.gguf",
       gpuLayers: 64,

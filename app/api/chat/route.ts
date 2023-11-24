@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { LlamaService } from "@/services/llama";
-import { ConversationInteraction, LlamaChatSession } from "node-llama-cpp";
+import { type ConversationInteraction, LlamaChatSession } from "node-llama-cpp";
 
 const bodySchema = z.object({
   messages: z.array(
@@ -13,11 +13,6 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: Request) {
-  console.log("request recieved");
-  // const parsedBody = await bodySchema.safeParseAsync(body);
-  // if (!parsedBody.success) {
-  //   return Response.json({ success: false }, { status: 400 })
-  // }
 
   if (!LlamaService.getContext()) {
     LlamaService.register();
@@ -42,29 +37,48 @@ export async function POST(req: Request) {
       conversationHistory.push(current);
     }
   });
+
+  
   
 
   if (current.prompt && !current.response) {
+    const responseStream = new TransformStream();
+    const writer = responseStream.writable.getWriter();
+    const encoder = new TextEncoder();
+
     const session = new LlamaChatSession({
       context: LlamaService.getContext(),
       conversationHistory,
     });
 
-    // const stream = new ReadableStream({
-    //   async start(controller) {
-    //     await session.prompt(current.prompt, { 
-    //       onToken(token) {
-    //         controller.enqueue(session.context.decode(token));
-    //         console.log(session.context.decode(token));
-    //       }
-    //     });
+    session.prompt(current.prompt, { 
+      onToken(token) {
+        const decoded = session.context.decode(token);
+        writer.write(encoder.encode("data: " + decoded + "\n\n"))
+          .then(() => {
+            console.log("Wrote", decoded);
+          })  
+          .catch(err => { console.error(err); });
+      },
+      signal: req.signal,
+    }).then(async () => {
+      await writer.write("[DONE]");
+      await writer.close();
+    })
+    .catch(err => { console.error(err); });
 
-    //     controller.close();
-    //   }
-    // });
-    const text = await session.prompt(current.prompt);
+    // const text = await session.prompt(current.prompt);
 
-    return new Response(text);
+    return new Response(responseStream.readable, {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "text/event-stream; charset=utf-8",
+        Connection: "keep-alive",
+        "Cache-Control": "no-cache, no-transform",
+        "X-Accel-Buffering": "no",
+        "Content-Encoding": "none",
+      },
+    });
   } else {
     return new Response("No prompt found", { status: 400 });
   }
