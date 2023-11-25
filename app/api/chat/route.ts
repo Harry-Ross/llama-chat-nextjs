@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { LlamaService } from "@/services/llama";
+import { LlamaService } from "@/services/server/llama";
 import { type ConversationInteraction, LlamaChatSession } from "node-llama-cpp";
 
 const bodySchema = z.object({
