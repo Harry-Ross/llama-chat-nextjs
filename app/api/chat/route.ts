@@ -12,7 +12,7 @@ const bodySchema = z.object({
   ),
 });
 
-export async function POST(req: Request) {
+export async function POST(req: Request): Promise<Response> {
 
   if (!LlamaService.getContext()) {
     LlamaService.register();
@@ -37,9 +37,6 @@ export async function POST(req: Request) {
       conversationHistory.push(current);
     }
   });
-
-  
-  
 
   if (current.prompt && !current.response) {
     const responseStream = new TransformStream();

@@ -7,32 +7,46 @@ import { type Message } from "@/app/page";
 import { getChatResponse } from "@/services/client/chat";
 
 
-const mockData: Message[] = [
-  {
-    text: "Tell me what's great about React",
-    system: false,
-  },
-]; 
+// const mockData: Message[] = [
+//   {
+//     text: "Tell me what's great about React",
+//     system: false,
+//   },
+// ]; 
 
 export const ChatWindow = (): JSX.Element => {
-  const [messages, setMessages] = useState<Message[]>(mockData);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  const [currentMsg, setCurrentMsg] = useState<string>("");
 
   return (
     <div className="grow-1 flex h-full flex-col">
       <div className="grow-1 mb-auto">
-        <ChatMessages messages={messages} />
+        <ChatMessages messages={messages} currentMsg={currentMsg} />
       </div>
       <div className="mt-auto w-full">
         <ChatInput
           addMessage={(message) => {
             setMessages((prev) => [...prev, { text: message, system: false }]);
             getChatResponse(messages)
-              .then((response) => {
+              .then(async (response) => {
                 if (!response) return; 
+
+                let accumulatedMsg = "";
+
                 while (true) {
-                  const { value, done } = response.read();
-                  if (done) break;
-                  console.log("received", value);
+                  const { value, done } = await response.read();
+                  if (done) {
+                    setMessages((prev) => [...prev, { text: accumulatedMsg, system: true }]);
+                    setCurrentMsg("");
+                    console.log("all done");
+                    break;
+                  };
+
+                  const trimmedData = value.replace("data: ", "");
+
+                  setCurrentMsg(prev => prev + trimmedData);
+                  accumulatedMsg += trimmedData;
                 }
               })
               .catch((error) => { console.log(error) }); 
