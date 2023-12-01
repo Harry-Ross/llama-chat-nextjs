@@ -27,8 +27,9 @@ export const ChatWindow = (): JSX.Element => {
       <div className="mt-auto w-full">
         <ChatInput
           addMessage={(message) => {
-            setMessages((prev) => [...prev, { text: message, system: false }]);
-            getChatResponse(messages)
+            const newMessage = { text: message, system: false };
+            setMessages((prev) => [...prev, newMessage]);
+            getChatResponse([...messages, newMessage])
               .then(async (response) => {
                 if (!response) return; 
 
