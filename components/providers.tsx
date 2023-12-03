@@ -1,7 +1,6 @@
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { SessionProvider } from "next-auth/react";
 import { type ThemeProviderProps } from "next-themes/dist/types";
 
 interface ProvidersProps {
@@ -9,10 +8,10 @@ interface ProvidersProps {
   themeProps: ThemeProviderProps;
 }
 
-export function Providers({ children, themeProps }: ProvidersProps) {
+export function Providers({ children, themeProps }: ProvidersProps): JSX.Element {
   return (
     <NextThemesProvider {...themeProps}>
-      <SessionProvider>{children}</SessionProvider>
+      {children}
     </NextThemesProvider>
   );
 }
