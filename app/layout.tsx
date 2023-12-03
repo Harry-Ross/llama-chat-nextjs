@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers themeProps={{ defaultTheme: "system", enableSystem: true }}>
+        <Providers themeProps={{ defaultTheme: "system", enableSystem: true, attribute: "class", disableTransitionOnChange: true }}>
           {children}
         </Providers>
       </body>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -8,8 +9,11 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "./ui/navigation-menu";
+import { SunMoon } from "lucide-react";
 
 export const Navbar = (): JSX.Element => {
+  const { theme, setTheme } = useTheme();
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -24,6 +28,17 @@ export const Navbar = (): JSX.Element => {
           <NavigationMenuContent>
             <NavigationMenuLink>Link2</NavigationMenuLink>
           </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            onClick={() => {
+              if (theme === "light") setTheme("dark");
+              if (theme === "dark") setTheme("light");
+            }}
+            className="hover:cursor-pointer"
+          >
+              <SunMoon />
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
