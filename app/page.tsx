@@ -1,12 +1,6 @@
-import { Navbar } from "@/components/navbar";
 import { ChatWindow } from "@/components/ChatWindow";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-export interface Message {
-  text: string;
-  system: boolean;
-}
 
 const mockData = [
   "Conversation here",
@@ -38,7 +32,6 @@ export default function Home(): JSX.Element {
         ))}
       </div>
       <div className="flex w-full flex-col p-2">
-        <Navbar />
         <ChatWindow />
       </div>
     </main>

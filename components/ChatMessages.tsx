@@ -1,4 +1,4 @@
-import { type Message } from "@/app/page";
+import type { Message } from "@/types/chat";
 import { cn } from "@/lib/utils";
 
 interface ChatMessagesProps {
@@ -6,7 +6,10 @@ interface ChatMessagesProps {
   currentMsg: string;
 }
 
-export const ChatMessages = ({ messages, currentMsg }: ChatMessagesProps): JSX.Element => {
+export const ChatMessages = ({
+  messages,
+  currentMsg,
+}: ChatMessagesProps): JSX.Element => {
   return (
     <>
       {messages.map((message, index) => (
@@ -29,6 +32,5 @@ const ChatMessage = ({ message }: { message: Message }): JSX.Element => {
     >
       {message.text}
     </div>
-  ); 
-  
-}
+  );
+};
