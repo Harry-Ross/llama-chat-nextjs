@@ -20,20 +20,25 @@ export default function Layout({ children, window }: { children: React.ReactNode
     <main className="flex h-screen">
       {/* TODO: change to nav */}
       <div className="w-64 bg-secondary text-secondary-foreground">
-        <Button variant="outline">
-          <Menu />
-        </Button>
-        <h1>Chat History</h1>
+        <div className="flex items-center">
+          <Button variant="default" className="m-1">
+            <Menu />
+          </Button>
+          <h1 className="inline text-lg font-bold pl-1.5">Chat History</h1>
+        </div>
         {mockData.map((data, index) => (
           <div
-            className="mx-1 my-2 rounded-lg border border-foreground p-2 hover:bg-neutral-700"
+            className="mx-1 my-2 rounded-lg p-2 hover:bg-neutral-700"
             key={data + index}
           >
             {data}
           </div>
         ))}
       </div>
-      <div className="flex w-full flex-col p-2">{window}{children}</div>
+      <div className="flex w-full flex-col px-4 py-2">
+        {window}
+        {children}
+      </div>
     </main>
   );
 }

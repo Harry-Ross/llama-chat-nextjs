@@ -12,14 +12,15 @@ export const ChatInput = ({ addMessage }: ChatInputProps): JSX.Element => {
   const [message, setMessage] = useState<string>("");
 
   return (
-    <div className="flex flex-row">
+    <form className="flex flex-row">
       <Input
         value={message}
         onChange={(event) => {
           setMessage(event.target.value);
         }}
       />
-      <Button 
+      <Button
+        type="submit"
         onClick={() => { 
           addMessage(message); 
           setMessage("");
@@ -27,6 +28,6 @@ export const ChatInput = ({ addMessage }: ChatInputProps): JSX.Element => {
       >
         Send
       </Button>
-    </div>
+    </form>
   );
 }

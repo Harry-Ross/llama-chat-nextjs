@@ -7,15 +7,19 @@ import { type Message } from "@/app/chat/page";
 import { getChatResponse } from "@/services/client/chat";
 
 
-// const mockData: Message[] = [
-//   {
-//     text: "Tell me what's great about React",
-//     system: false,
-//   },
-// ]; 
+const mockData: Message[] = [
+  {
+    text: "Tell me what's great about React",
+    system: false,
+  },
+  {
+    text: "I'm not sure, but I think it's the component-based architecture",
+    system: true,
+  }
+]; 
 
 export const ChatWindow = (): JSX.Element => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(mockData);
 
   const [currentMsg, setCurrentMsg] = useState<string>("");
 
