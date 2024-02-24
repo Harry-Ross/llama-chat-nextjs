@@ -1,4 +1,4 @@
-import { type Message } from "@/app/page";
+import { type Message } from "@/app/chat/page";
 
 export const getChatResponse = async (messages: Message[]): Promise<ReadableStreamDefaultReader<string> | undefined> => {
   console.log(messages);

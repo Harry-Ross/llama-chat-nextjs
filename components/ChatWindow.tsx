@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ChatInput } from "./ChatInput";
 import { ChatMessages } from "./ChatMessages";
-import { type Message } from "@/app/page";
+import { type Message } from "@/app/chat/page";
 import { getChatResponse } from "@/services/client/chat";
 
 

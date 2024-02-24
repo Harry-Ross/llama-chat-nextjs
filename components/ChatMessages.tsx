@@ -27,7 +27,7 @@ const ChatMessage = ({ message }: { message: Message }): JSX.Element => {
     <div
       className={cn(
         "my-4 rounded-md p-4",
-        message.system ? "bg-blue-200" : "bg-red-200",
+        message.system ? "bg-neutral-800 text-white" : "bg-white text-black",
       )}
     >
       {message.text}
