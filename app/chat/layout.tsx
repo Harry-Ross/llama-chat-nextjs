@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import {  getConversationsWithMessages } from "@/services/server/history";
 import { Menu } from "lucide-react";
 import React from "react";
 
@@ -15,6 +16,11 @@ const mockData = [
 ];
 
 export default function Layout({ children, window }: { children: React.ReactNode, window: React.ReactNode }): React.ReactNode {
+
+
+  getConversationsWithMessages((data) => {
+    console.log(data);
+  });
 
   return (
     <main className="flex h-screen">
