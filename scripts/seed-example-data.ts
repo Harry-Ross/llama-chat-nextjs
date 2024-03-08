@@ -15,13 +15,42 @@ const db = new verbose.Database(
   },
 );
 
-
 db.serialize(() => {
   createTables(db);
+  db.run("DELETE FROM conversations", (err) => {
+    if (err) console.error(err);
+  });
   db.run(
-    `INSERT INTO conversations (title) VALUES (?)`,
-    ["How great React is"], (err) => {
+    `INSERT INTO conversations (title) VALUES (?), (?), (?), (?), (?), (?), (?)`,
+    [
+      "How great React is",
+      "The importance of ethics in AI research",
+      "Exploring the future of AI",
+      "AI-powered chatbots: Enhancing customer experience",
+      "Machine learning algorithms: A deep dive",
+      "AI in healthcare: Revolutionizing patient care",
+      "The role of AI in autonomous vehicles",
+    ],
+    (err) => {
       if (err) console.error(err);
-    }
+    },
   );
+
+  db.run("DELETE FROM messages", (err) => {
+    if (err) console.error(err);
+  });
+
+  db.run(
+    `INSERT INTO messages (conversation_id, content, system) VALUES 
+    (1, "Tell me what's great about React", 0), 
+    (1, "I'm not sure, but I think it's the component-based architecture", 1)`,
+    (err) => {
+      if (err) console.error(err);
+    },
+  );
+
+  db.close((err) => {
+    if (err) console.error(err);
+    console.log("Closed database");
+  });
 });
