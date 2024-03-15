@@ -1,9 +1,9 @@
 export interface Message {
-  message_id: number;
-  conversation_id: number;
+  message_id?: number;
+  conversation_id?: number;
   content: string;
   system: boolean;
-  timestamp: number;
+  timestamp?: number;
 }
 
 export interface Conversation {

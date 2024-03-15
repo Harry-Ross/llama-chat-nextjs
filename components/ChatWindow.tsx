@@ -3,23 +3,29 @@
 import { useState } from "react";
 import { ChatInput } from "./ChatInput";
 import { ChatMessages } from "./ChatMessages";
-import { type Message } from "@/app/chat/page";
 import { getChatResponse } from "@/services/client/chat";
+import { type Message } from "@/types/chat";
 
 
-const mockData: Message[] = [
-  {
-    text: "Tell me what's great about React",
-    system: false,
-  },
-  {
-    text: "I'm not sure, but I think it's the component-based architecture",
-    system: true,
-  }
-]; 
+// const mockData: Message[] = [
+//   {
+//     text: "Tell me what's great about React",
+//     system: false,
+//   },
+//   {
+//     text: "I'm not sure, but I think it's the component-based architecture",
+//     system: true,
+//   }
+// ]; 
 
-export const ChatWindow = (): JSX.Element => {
-  const [messages, setMessages] = useState<Message[]>(mockData);
+interface ChatWindowProps {
+  messages: Message[];
+}
+
+export const ChatWindow = ({
+  messages: messagesProp,
+}: ChatWindowProps): JSX.Element => {
+  const [messages, setMessages] = useState<Message[]>(messagesProp);
 
   const [currentMsg, setCurrentMsg] = useState<string>("");
 
@@ -31,33 +37,38 @@ export const ChatWindow = (): JSX.Element => {
       <div className="mt-auto w-full">
         <ChatInput
           addMessage={(message) => {
-            const newMessage = { text: message, system: false };
+            const newMessage: Message = { content: message, system: false, message_id: 3, conversation_id: 1, timestamp: Date.now()};
             setMessages((prev) => [...prev, newMessage]);
             getChatResponse([...messages, newMessage])
               .then(async (response) => {
-                if (!response) return; 
+                if (!response) return;
 
                 let accumulatedMsg = "";
 
                 while (true) {
                   const { value, done } = await response.read();
                   if (done) {
-                    setMessages((prev) => [...prev, { text: accumulatedMsg, system: true }]);
+                    setMessages((prev) => [
+                      ...prev,
+                      { content: accumulatedMsg, system: true },
+                    ]);
                     setCurrentMsg("");
                     console.log("all done");
                     break;
-                  };
+                  }
 
                   const trimmedData = value.replace("data: ", "");
 
-                  setCurrentMsg(prev => prev + trimmedData);
+                  setCurrentMsg((prev) => prev + trimmedData);
                   accumulatedMsg += trimmedData;
                 }
               })
-              .catch((error) => { console.log(error) }); 
+              .catch((error) => {
+                console.log(error);
+              });
           }}
         />
       </div>
     </div>
   );
-}
+};
