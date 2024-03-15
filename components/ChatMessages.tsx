@@ -13,11 +13,11 @@ export const ChatMessages = ({
 }: ChatMessagesProps): JSX.Element => {
   return (
     <>
-      {messages.map((message, index) => (
+      {messages?.map((message, index) => (
         <ChatMessage message={message} key={index} />
       ))}
       {currentMsg && (
-        <ChatMessage message={{ text: currentMsg, system: true }} />
+        <ChatMessage message={{ content: currentMsg, system: true }} />
       )}
     </>
   );
@@ -47,7 +47,7 @@ const ChatMessage = ({ message }: { message: Message }): JSX.Element => {
               YOU
             </>}
       </div>
-      {message.text}
+      {message.content}
     </div>
   );
 };
