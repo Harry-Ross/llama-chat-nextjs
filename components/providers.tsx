@@ -8,9 +8,12 @@ interface ProvidersProps {
   themeProps: ThemeProviderProps;
 }
 
-export function Providers({ children, themeProps }: ProvidersProps): JSX.Element {
+export function Providers({
+  children,
+  themeProps,
+}: ProvidersProps): JSX.Element {
   return (
-    <NextThemesProvider {...themeProps}>
+    <NextThemesProvider {...themeProps} attribute="class" defaultTheme="dark">
       {children}
     </NextThemesProvider>
   );
