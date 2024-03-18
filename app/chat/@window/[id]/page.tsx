@@ -1,6 +1,6 @@
 import { ChatWindow } from "@/components/ChatWindow";
-import { getConversation } from "@/services/server/history";
-import { type Conversation } from "@/types/chat";
+import { getMessages } from "@/services/server/history";
+import { type Message } from "@/types/chat";
 
 interface WindowProps { 
   params: { 
@@ -8,16 +8,17 @@ interface WindowProps {
   }
 };
 
-const getConversationAsync = async (id: number): Promise<Conversation> => {
+const getMessagesAsync = async (id: number): Promise<Message[]> => {
   return await new Promise((resolve, reject) => {
-    getConversation(id, (data) => {
+    getMessages(id, (data) => {
       resolve(data);
     });
   });
 };
 
 export default async function Window({ params: { id } }: WindowProps): Promise<JSX.Element> {
-  const conversation = await getConversationAsync(id);
+  const conversation = await getMessagesAsync(id);
+  console.log(conversation);
 
-  return <ChatWindow messages={conversation.messages} />;
+  return <ChatWindow messages={conversation} />;
 }

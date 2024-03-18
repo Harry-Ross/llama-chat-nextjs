@@ -11,11 +11,11 @@ const db = new verbose.Database("./database.db", sqlite3.OPEN_READWRITE | sqlite
   console.log("Opened SQLite database");
 });
 
-export const getConversation = (id: number, callbackFunc: (conv: Conversation) => void): void => {
-  db.get("SELECT * FROM conversations WHERE conversation_id = ?", id, (err, row: Conversation) => {
+export const getMessages = (conversationId: number, callbackFunc: (conv: Message[]) => void): void => {
+  db.all("SELECT * FROM messages JOIN conversations ON messages.conversation_id = conversations.conversation_id WHERE conversations.conversation_id = ?", conversationId, (err, rows: Message[]) => {
     if (err) console.error(err);
 
-    callbackFunc(row);
+    callbackFunc(rows);
   });
 }
 
