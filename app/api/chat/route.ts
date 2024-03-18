@@ -3,6 +3,8 @@ import { z } from "zod";
 import { LlamaService } from "@/services/server/llama";
 import { type ConversationInteraction, LlamaChatSession } from "node-llama-cpp";
 
+export const dynamic = "force-dynamic";
+
 const bodySchema = z.object({
   messages: z.array(
     z.object({ 
