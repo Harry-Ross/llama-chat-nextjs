@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { type Conversation } from "@/types/chat";
 import { useState } from "react";
+import { DarkModeButton } from "./DarkModeButton";
 
 interface SidebarProps {
   conversations: Conversation[];
@@ -14,7 +15,7 @@ export const Sidebar = ({ conversations }: SidebarProps): JSX.Element => {
   const [open, setOpen] = useState(true);
 
   return (
-    <div className="bg-secondary text-secondary-foreground">
+    <div className="flex flex-col bg-secondary text-secondary-foreground">
       <div className="flex items-center">
         <Button
           variant="default"
@@ -43,6 +44,9 @@ export const Sidebar = ({ conversations }: SidebarProps): JSX.Element => {
           ))}
         </>
       )}
+      <div className="mt-auto">
+        <DarkModeButton />
+      </div>
     </div>
   );
 };
