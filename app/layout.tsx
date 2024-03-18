@@ -11,13 +11,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  window,
 }: {
   children: React.ReactNode;
+  window: React.ReactNode;
 }): JSX.Element {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers themeProps={{ defaultTheme: "system", enableSystem: true, attribute: "class", disableTransitionOnChange: true }}>
+        <Providers
+          themeProps={{
+            defaultTheme: "system",
+            enableSystem: true,
+            attribute: "class",
+            disableTransitionOnChange: true,
+          }}
+        >
           {children}
         </Providers>
       </body>
