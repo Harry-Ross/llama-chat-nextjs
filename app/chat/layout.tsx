@@ -12,7 +12,6 @@ const conversationsAsync = async (): Promise<Conversation[]> => {
 
 export default async function Layout({
   children,
-  window,
 }: {
   children: React.ReactNode;
   window: React.ReactNode;
@@ -22,10 +21,7 @@ export default async function Layout({
   return (
     <main className="flex h-screen">
       <Sidebar conversations={conversations} />
-      <div className="flex w-full flex-col px-4 py-2">
-        {window}
-        {children}
-      </div>
+      <div className="flex w-full flex-col px-4 py-2">{children}</div>
     </main>
   );
 }
