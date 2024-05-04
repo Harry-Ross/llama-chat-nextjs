@@ -2,9 +2,22 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export const DarkModeButton = (): JSX.Element => {
   const { theme, setTheme } = useTheme();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setMounted(true);
+    }
+  }, []);
+
+  if (!mounted) {
+    return <></>;
+  }
 
   return (
     <button
