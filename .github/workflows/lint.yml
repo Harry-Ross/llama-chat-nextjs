@@ -1,0 +1,25 @@
+name: Lint Project
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - name: Use Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Lint Code
+        run: pnpm lint
