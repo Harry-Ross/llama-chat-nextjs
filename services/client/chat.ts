@@ -1,9 +1,9 @@
-import { type Message } from "@/app/chat/page";
+import type { Message } from "@/types/chat";
 
-export const getChatResponse = async (messages: Message[]): Promise<ReadableStreamDefaultReader<string> | undefined> => {
-  console.log(messages);
-
-  const res = await fetch("http://localhost:3000/api/chat", {
+export const getChatResponse = async (
+  messages: Message[],
+): Promise<ReadableStreamDefaultReader<string> | undefined> => {
+  const res = await fetch("/api/chat", {
     method: "POST",
     body: JSON.stringify({
       messages,
@@ -11,5 +11,9 @@ export const getChatResponse = async (messages: Message[]): Promise<ReadableStre
     cache: "no-store",
   });
 
+  if (res.status !== 200) {
+    throw new Error("Failed to get chat response");
+  }
+
   return res.body?.pipeThrough(new TextDecoderStream()).getReader();
-}
+};

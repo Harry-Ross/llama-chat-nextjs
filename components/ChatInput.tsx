@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
 import { useState } from "react";
-import { Input } from "./ui/input"
+import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 
 interface ChatInputProps {
@@ -12,7 +12,7 @@ export const ChatInput = ({ addMessage }: ChatInputProps): JSX.Element => {
   const [message, setMessage] = useState<string>("");
 
   return (
-    <form className="flex flex-row">
+    <div className="flex flex-row">
       <Input
         value={message}
         onChange={(event) => {
@@ -21,13 +21,13 @@ export const ChatInput = ({ addMessage }: ChatInputProps): JSX.Element => {
       />
       <Button
         type="submit"
-        onClick={() => { 
-          addMessage(message); 
+        onClick={() => {
+          addMessage(message);
           setMessage("");
         }}
       >
         Send
       </Button>
-    </form>
+    </div>
   );
-}
+};

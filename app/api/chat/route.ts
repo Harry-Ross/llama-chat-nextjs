@@ -19,9 +19,15 @@ export async function POST(req: Request): Promise<Response> {
     LlamaService.register();
   }
 
-  type BodyType = z.infer<typeof bodySchema>;
+  const json = await req.json();
+  const parsedBody = bodySchema.safeParse(json);
 
-  const body: BodyType = await req.json();
+  if (!parsedBody.success) {
+    console.error(parsedBody.error);
+    return new Response("Invalid body", { status: 400 });
+  }
+
+  const body = parsedBody.data;
 
   const conversationHistory: ConversationInteraction[] = [];
 
@@ -33,10 +39,15 @@ export async function POST(req: Request): Promise<Response> {
         response: "",
       };
     } else {
-      current.response = msg.text;
+      current = {
+        prompt: "",
+        response: msg.text,
+      };
       conversationHistory.push(current);
     }
   });
+
+  console.log(current);
 
   if (current.prompt && !current.response) {
     const responseStream = new TransformStream();
@@ -47,6 +58,8 @@ export async function POST(req: Request): Promise<Response> {
       context: LlamaService.getContext(),
       conversationHistory,
     });
+
+    console.log("we here");
 
     session
       .prompt(current.prompt, {

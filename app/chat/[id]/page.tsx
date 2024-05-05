@@ -19,10 +19,7 @@ const getMessagesAsync = async (id: number): Promise<Message[]> => {
 export default async function Window({
   params: { id },
 }: WindowProps): Promise<JSX.Element> {
-  console.log("id", id);
-
   const conversation = await getMessagesAsync(id);
-  console.log(conversation);
 
   return <ChatWindow messages={conversation} />;
 }
