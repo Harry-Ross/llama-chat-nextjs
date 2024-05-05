@@ -55,7 +55,7 @@ export const ChatWindow = ({
 
                 while (true) {
                   const { value, done } = await response.read();
-                  if (done) {
+                  if (value === "[DONE]" || done) {
                     setMessages((prev) => [
                       ...prev,
                       { content: accumulatedMsg, system: true },
@@ -64,7 +64,9 @@ export const ChatWindow = ({
                     break;
                   }
 
-                  const trimmedData = value.replace("data: ", "");
+                  const trimmedData = value
+                    .replace("data: ", "")
+                    .replace("\n\n", "");
 
                   setCurrentMsg((prev) => prev + trimmedData);
                   accumulatedMsg += trimmedData;

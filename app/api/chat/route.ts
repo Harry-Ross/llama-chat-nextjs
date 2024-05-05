@@ -33,18 +33,19 @@ export async function POST(req: Request): Promise<Response> {
   const conversationHistory: ConversationInteraction[] = [];
 
   let current: ConversationInteraction = { prompt: "", response: "" };
-  body.messages?.forEach((msg) => {
+  body.messages?.forEach((msg, index) => {
     if (!msg.system) {
-      current = {
-        prompt: msg.content,
-        response: "",
-      };
+      if (index !== body.messages.length - 1) {
+        current.prompt = msg.content;
+      } else {
+        current = {
+          prompt: msg.content,
+          response: "",
+        };
+      }
     } else {
-      current = {
-        prompt: "",
-        response: msg.content,
-      };
-      conversationHistory.push(current);
+      current.response = msg.content;
+      conversationHistory.push({...current});
     }
   });
 
