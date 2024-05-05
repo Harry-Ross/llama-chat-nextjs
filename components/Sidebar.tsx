@@ -6,7 +6,7 @@ import Link from "next/link";
 import { type Conversation } from "@/types/chat";
 import { useState } from "react";
 import { DarkModeButton } from "./DarkModeButton";
-import { redirect, useSelectedLayoutSegment } from "next/navigation";
+import { useSelectedLayoutSegment } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { createChat } from "@/services/client/create-chat";
 
