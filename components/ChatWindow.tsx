@@ -74,6 +74,7 @@ export const ChatWindow = ({
                 toast({
                   variant: "destructive",
                   title: "Something went wrong!",
+                  description: error.message,
                 });
                 console.error(error);
               });
