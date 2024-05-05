@@ -1,11 +1,13 @@
 import type { Message } from "@/types/chat";
 
 export const getChatResponse = async (
+  conversationId: number,
   messages: Message[],
 ): Promise<ReadableStreamDefaultReader<string> | undefined> => {
   const res = await fetch("/api/chat", {
     method: "POST",
     body: JSON.stringify({
+      conversationId,
       messages,
     }),
     cache: "no-store",

@@ -75,6 +75,16 @@ export const getMessage = (
   );
 };
 
+export const insertMessage = (conversationId: number, content: string, system: boolean): void => {
+  db.run(
+    "INSERT INTO messages (conversation_id, content, system) VALUES (?, ?, ?)",
+    [conversationId, content, system ? 1 : 0],
+    (err) => {
+      if (err) console.error(err);
+    },
+  );
+}
+
 export const close = (): void => {
   db.close((err) => {
     if (err) {

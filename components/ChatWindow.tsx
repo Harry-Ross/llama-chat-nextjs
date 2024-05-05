@@ -47,7 +47,7 @@ export const ChatWindow = ({
               timestamp: Date.now(),
             };
             setMessages((prev) => [...prev, newMessage]);
-            getChatResponse([...messages, newMessage])
+            getChatResponse(1, [...messages, newMessage])
               .then(async (response) => {
                 if (!response) return;
 

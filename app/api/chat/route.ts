@@ -2,10 +2,12 @@ import { z } from "zod";
 
 import { LlamaService } from "@/services/server/llama";
 import { type ConversationInteraction, LlamaChatSession } from "node-llama-cpp";
+import { insertMessage } from "@/services/server/history";
 
 export const dynamic = "force-dynamic";
 
 const bodySchema = z.object({
+  conversationId: z.number(),
   messages: z.array(
     z.object({
       content: z.string(),
@@ -23,7 +25,6 @@ export async function POST(req: Request): Promise<Response> {
   const parsedBody = bodySchema.safeParse(json);
 
   if (!parsedBody.success) {
-    console.log(json);
     console.error(parsedBody.error);
     return new Response("Invalid body", { status: 400 });
   }
@@ -50,6 +51,8 @@ export async function POST(req: Request): Promise<Response> {
   });
 
   if (current.prompt && !current.response) {
+    insertMessage(body.conversationId, current.prompt, false);
+
     const responseStream = new TransformStream();
     const writer = responseStream.writable.getWriter();
     const encoder = new TextEncoder();
@@ -59,10 +62,14 @@ export async function POST(req: Request): Promise<Response> {
       conversationHistory,
     });
 
+    let response = "";
+
     session
       .prompt(current.prompt, {
         onToken(token) {
           const decoded = session.context.decode(token);
+
+          response += decoded;
           writer
             .write(encoder.encode("data: " + decoded + "\n\n"))
             .then(() => {
@@ -75,14 +82,14 @@ export async function POST(req: Request): Promise<Response> {
         signal: req.signal,
       })
       .then(async () => {
+        insertMessage(body.conversationId, response, true);
+
         await writer.write("[DONE]");
         await writer.close();
       })
       .catch((err) => {
         console.error(err);
       });
-
-    // const text = await session.prompt(current.prompt);
 
     return new Response(responseStream.readable, {
       headers: {
