@@ -47,8 +47,6 @@ export async function POST(req: Request): Promise<Response> {
     }
   });
 
-  console.log(current);
-
   if (current.prompt && !current.response) {
     const responseStream = new TransformStream();
     const writer = responseStream.writable.getWriter();
@@ -58,8 +56,6 @@ export async function POST(req: Request): Promise<Response> {
       context: LlamaService.getContext(),
       conversationHistory,
     });
-
-    console.log("we here");
 
     session
       .prompt(current.prompt, {

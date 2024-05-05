@@ -61,7 +61,6 @@ export const ChatWindow = ({
                       { content: accumulatedMsg, system: true },
                     ]);
                     setCurrentMsg("");
-                    console.log("all done");
                     break;
                   }
 
