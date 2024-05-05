@@ -8,8 +8,8 @@ export const dynamic = "force-dynamic";
 const bodySchema = z.object({
   messages: z.array(
     z.object({
-      text: z.string(),
-      system: z.boolean(),
+      content: z.string(),
+      system: z.union([z.boolean(), z.number().gte(0).lte(1)]),
     }),
   ),
 });
@@ -23,6 +23,7 @@ export async function POST(req: Request): Promise<Response> {
   const parsedBody = bodySchema.safeParse(json);
 
   if (!parsedBody.success) {
+    console.log(json);
     console.error(parsedBody.error);
     return new Response("Invalid body", { status: 400 });
   }
@@ -35,13 +36,13 @@ export async function POST(req: Request): Promise<Response> {
   body.messages?.forEach((msg) => {
     if (!msg.system) {
       current = {
-        prompt: msg.text,
+        prompt: msg.content,
         response: "",
       };
     } else {
       current = {
         prompt: "",
-        response: msg.text,
+        response: msg.content,
       };
       conversationHistory.push(current);
     }
