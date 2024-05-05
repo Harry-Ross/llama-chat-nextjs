@@ -1,13 +1,14 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Menu, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { type Conversation } from "@/types/chat";
 import { useState } from "react";
 import { DarkModeButton } from "./DarkModeButton";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { redirect, useSelectedLayoutSegment } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { createChat } from "@/services/client/create-chat";
 
 interface SidebarProps {
   conversations: Conversation[];
@@ -55,6 +56,17 @@ export const Sidebar = ({ conversations }: SidebarProps): JSX.Element => {
               </div>
             </Link>
           ))}
+          <button
+            onClick={() => {
+              // eslint-disable-next-line @typescript-eslint/no-floating-promises
+              createChat();
+            }}
+          >
+            <div className="mx-1 my-2 flex flex-row justify-center rounded-lg p-2 text-center text-neutral-500 hover:bg-neutral-700">
+              New Chat{" "}
+              <Plus className="my-auto ml-2 inline" height={15} width={15} />
+            </div>
+          </button>
         </>
       )}
       <div className="mt-auto">

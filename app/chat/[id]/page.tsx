@@ -21,5 +21,5 @@ export default async function Window({
 }: WindowProps): Promise<JSX.Element> {
   const conversation = await getMessagesAsync(id);
 
-  return <ChatWindow messages={conversation} />;
+  return <ChatWindow messages={conversation} conversationId={id} />;
 }

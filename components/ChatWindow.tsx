@@ -7,22 +7,13 @@ import { getChatResponse } from "@/services/client/chat";
 import { type Message } from "@/types/chat";
 import { useToast } from "./ui/use-toast";
 
-// const mockData: Message[] = [
-//   {
-//     text: "Tell me what's great about React",
-//     system: false,
-//   },
-//   {
-//     text: "I'm not sure, but I think it's the component-based architecture",
-//     system: true,
-//   }
-// ];
-
 interface ChatWindowProps {
   messages: Message[];
+  conversationId: number;
 }
 
 export const ChatWindow = ({
+  conversationId,
   messages: messagesProp,
 }: ChatWindowProps): JSX.Element => {
   const [messages, setMessages] = useState<Message[]>(messagesProp);
@@ -47,7 +38,7 @@ export const ChatWindow = ({
               timestamp: Date.now(),
             };
             setMessages((prev) => [...prev, newMessage]);
-            getChatResponse(1, [...messages, newMessage])
+            getChatResponse(conversationId, [...messages, newMessage])
               .then(async (response) => {
                 if (!response) return;
 

@@ -75,6 +75,17 @@ export const getMessage = (
   );
 };
 
+export const createConversation = (title: string, callback: (num: number) => void): void => {
+  db.run(
+    "INSERT INTO conversations (title) VALUES (?)",
+    title,
+    function (err) {
+      if (err) console.error(err);
+      callback(this.lastID)
+    },
+  );
+}
+
 export const insertMessage = (conversationId: number, content: string, system: boolean): void => {
   db.run(
     "INSERT INTO messages (conversation_id, content, system) VALUES (?, ?, ?)",
