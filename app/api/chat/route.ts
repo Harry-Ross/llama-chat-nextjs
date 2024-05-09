@@ -7,7 +7,7 @@ import { insertMessage } from "@/services/server/history";
 export const dynamic = "force-dynamic";
 
 const bodySchema = z.object({
-  conversationId: z.number(),
+  conversationId: z.number({ coerce: true }),
   messages: z.array(
     z.object({
       content: z.string(),

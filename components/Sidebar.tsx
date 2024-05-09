@@ -3,7 +3,7 @@
 import { Menu, Plus } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { type Conversation } from "@/types/chat";
+import type { BasicConversation } from "@/types/chat";
 import { useState } from "react";
 import { DarkModeButton } from "./DarkModeButton";
 import { useSelectedLayoutSegment } from "next/navigation";
@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { createChat } from "@/services/client/create-chat";
 
 interface SidebarProps {
-  conversations: Conversation[];
+  conversations: BasicConversation[];
 }
 
 export const Sidebar = ({ conversations }: SidebarProps): JSX.Element => {

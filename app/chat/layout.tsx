@@ -1,10 +1,10 @@
 import { Sidebar } from "@/components/Sidebar";
-import { getConversationsWithMessages } from "@/services/server/history";
-import { type Conversation } from "@/types/chat";
+import { getConversations } from "@/services/server/history";
+import type { BasicConversation } from "@/types/chat";
 
-const conversationsAsync = async (): Promise<Conversation[]> => {
+const conversationsAsync = async (): Promise<BasicConversation[]> => {
   return await new Promise((resolve, reject) => {
-    getConversationsWithMessages((data) => {
+    getConversations((data) => {
       resolve(data);
     });
   });

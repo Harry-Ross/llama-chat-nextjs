@@ -6,9 +6,12 @@ export interface Message {
   timestamp?: number;
 }
 
-export interface Conversation {
+export interface BasicConversation {
   conversation_id: number;
   title: string;
   timestamp: number;
+}
+
+export interface Conversation extends BasicConversation {
   messages: Message[];
 };

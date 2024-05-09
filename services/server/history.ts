@@ -1,4 +1,4 @@
-import { type Conversation, type Message } from "@/types/chat";
+import { type BasicConversation, type Conversation, type Message } from "@/types/chat";
 import sqlite3 from "sqlite3";
 
 const verbose = sqlite3.verbose();
@@ -30,8 +30,18 @@ export const getMessages = (
   );
 };
 
-export const getConversationsWithMessages = (
+export const getConversations = (
   callbackFunc: (convs: Conversation[]) => void,
+): void => {
+  db.all("SELECT * FROM conversations", (err, rows: Conversation[]) => {
+    if (err) console.error(err);
+
+    callbackFunc(rows);
+  });
+}
+
+export const getConversationsWithMessages = (
+  callbackFunc: (convs: BasicConversation[]) => void,
 ): void => {
   db.all(
     "SELECT * FROM messages JOIN conversations ON messages.conversation_id = conversations.conversation_id",
@@ -90,8 +100,14 @@ export const insertMessage = (conversationId: number, content: string, system: b
   db.run(
     "INSERT INTO messages (conversation_id, content, system) VALUES (?, ?, ?)",
     [conversationId, content, system ? 1 : 0],
-    (err) => {
+    function (err) {
       if (err) console.error(err);
+      // If the message is the first in a conversation, set the conversation title to the first message
+      db.run("UPDATE conversations SET title = (SELECT content FROM messages WHERE conversation_id = ? ORDER BY message_id ASC LIMIT 1) WHERE conversation_id = ?", 
+      [conversationId, conversationId], 
+      (err) => {
+        if (err) console.error(err);
+      });
     },
   );
 }
