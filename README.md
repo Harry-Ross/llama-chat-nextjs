@@ -1,3 +1,9 @@
+# Llama Chat Next.js
+
+![Llama Chat running locally](https://github.com/Harry-Ross/llama-chat-nextjs/assets/20507092/0a965f25-bf28-428d-9cd6-8f2f4e5127f5)
+
+Hey all, this project was a little experiment in wanting run Llama locally on my own machine using `node-llama-cpp`, `SQLite` and more! See the full write-up of the project and technical considerations/decisions here: https://harry.is-a.dev/projects/llama-chat/. 
+
 ## Getting Started
 
 1. First, download a quantised GGUF Llama 2 Chat model from TheBloke on HuggingFace: [https://huggingface.co/TheBloke](huggingface.co/TheBloke). I used [https://huggingface.co/TheBloke/Llama-2-7b-Chat-GGUF](huggingface.co/TheBloke/Llama-2-7b-Chat-GGUF), but choose whatever best suits your needs and requirements.
