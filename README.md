@@ -2,7 +2,7 @@
 
 ![Llama Chat running locally](https://github.com/Harry-Ross/llama-chat-nextjs/assets/20507092/0a965f25-bf28-428d-9cd6-8f2f4e5127f5)
 
-Hey all, this project was a little experiment in wanting run Llama locally on my own machine using `node-llama-cpp`, `SQLite` and more! See the full write-up of the project and technical considerations/decisions here: https://harry.is-a.dev/projects/llama-chat/. 
+Hey all, this project was a little experiment in wanting run Llama locally on my own machine using the Next.js App Router, `node-llama-cpp`, SQLite and more! See the full write-up of the project and technical considerations/decisions here: https://harry.is-a.dev/projects/llama-chat/. 
 
 ## Getting Started
 
