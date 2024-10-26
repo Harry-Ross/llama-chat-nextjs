@@ -13,7 +13,7 @@ export class LlamaService {
 
   public static register(): void {
     const model = new LlamaModel({
-      modelPath: "llama/llama-2-7b-chat.Q2_K.gguf",
+      modelPath: process.env.LLAMA_MODEL_PATH || "llama/llama-2-7b-chat.Q2_K.gguf",
       gpuLayers: 64,
     });
 
